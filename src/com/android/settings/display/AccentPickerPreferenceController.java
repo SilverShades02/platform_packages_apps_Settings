@@ -34,6 +34,8 @@ import com.android.settings.fred.themes.AccentPicker;
 
 import com.android.internal.util.fred.Utils;
 
+import com.android.internal.util.fred.Utils;
+
 public class AccentPickerPreferenceController extends AbstractPreferenceController
         implements PreferenceControllerMixin, LifecycleObserver, OnResume {
 
