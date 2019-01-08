@@ -112,6 +112,13 @@
         settings:keywords="@string/keywords_android_version"
         android:summary="@string/summary_placeholder"/>
 
+    <!-- FredProject info -->
+    <Preference
+        android:key="fred_info"
+        android:order="33"
+        android:title="@string/fred_info"
+        android:summary="@string/summary_placeholder"/>
+
     <!--IP address -->
     <Preference
         android:key="wifi_ip_address"
