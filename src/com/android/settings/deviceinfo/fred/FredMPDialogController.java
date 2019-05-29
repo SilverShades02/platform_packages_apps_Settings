@@ -22,25 +22,24 @@ import android.os.UserManager;
 
 import com.android.settings.R;
 
-public class FredMaintainerDialogController {
+public class FredMPDialogController {
 
-    private static final String FRED_PROPERTY = "ro.fred.maintainer";
-    private static final int FRED_MAINTAINER_VALUE_ID = R.id.fred_maintainer_value;
-    private static final int FRED_MAINTAINER_LABEL_ID = R.id.fred_maintainer_label;
+    private static final String FRED_PROPERTY = "ro.fred.maintenance_patch";
+    private static final int FRED_MP_VALUE_ID = R.id.fred_mp_value;
+    private static final int FRED_MP_LABEL_ID = R.id.fred_mp_label;
 
     private final FredInfoDialogFragment mDialog;
     private final Context mContext;
     private final UserManager mUserManager;
 
-    public FredMaintainerDialogController(FredInfoDialogFragment dialog) {
+    public FredMPDialogController(FredInfoDialogFragment dialog) {
         mDialog = dialog;
         mContext = dialog.getContext();
         mUserManager = (UserManager) mContext.getSystemService(Context.USER_SERVICE);
     }
 
     public void initialize() {
-
-        mDialog.setText(FRED_MAINTAINER_VALUE_ID, SystemProperties.get(FRED_PROPERTY,
+        mDialog.setText(FRED_MP_VALUE_ID, SystemProperties.get(FRED_PROPERTY,
                 mContext.getResources().getString(R.string.device_info_default)));
     }
 }

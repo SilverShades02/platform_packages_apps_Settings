@@ -18,6 +18,7 @@ package com.android.settings.deviceinfo.fred;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.SystemProperties;
 import android.support.v7.preference.Preference;
@@ -32,9 +33,9 @@ public class FredInfoPreferenceController extends AbstractPreferenceController i
         PreferenceControllerMixin {
 
     private final static String FRED_INFO_KEY = "fred_info";
-    private static final String FRED_VERSION = "ro.fred.vernum";
 
     private final Fragment mFragment;
+    private final Preference mPreference;
 
     public FredInfoPreferenceController(Context context, Fragment fragment) {
         super(context);
@@ -50,10 +51,9 @@ public class FredInfoPreferenceController extends AbstractPreferenceController i
     @Override
     public void displayPreference(PreferenceScreen screen) {
         super.displayPreference(screen);
-        final Preference pref = screen.findPreference(getPreferenceKey());
-        if (pref != null) {
-            pref.setSummary(SystemProperties.get(FRED_VERSION,
-                mContext.getResources().getString(R.string.device_info_default)));
+        mPreference = screen.findPreference(getPreferenceKey());
+        mStatus = SystemProperties.get("ro.fred.releasetype");
+        updateDeviceStatus();
         }
     }
 
@@ -70,5 +70,31 @@ public class FredInfoPreferenceController extends AbstractPreferenceController i
 
         FredInfoDialogFragment.show(mFragment);
         return true;
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        super.updateState(preference);
+        updateDeviceStatus();
+    }
+
+    private void updateDeviceStatus() {
+        Drawable certified = mContext.getResources().getDrawable(R.drawable.ic_certification_status_certified);
+        certified.setTint(Utils.getColorAccent(mContext));
+        Drawable uncertified = mContext.getResources().getDrawable(R.drawable.ic_certification_status_uncertified);
+        uncertified.setTint(mContext.getResources().getColor(R.color.certification_status_uncertified));
+        if ("unofficial".equals(mStatus)) {
+            mPreference.setIcon(uncertified);
+            mPreference.setTitle(R.string.device_certification_status_uncertified);
+        } else if ("official".equals(mStatus)) {
+            mPreference.setIcon(certified);
+            mPreference.setTitle(R.string.device_certification_status_certified);
+        } else if ("beta".equals(mStatus)) {
+            mPreference.setIcon(uncertified);
+            mPreference.setTitle(R.string.device_certification_status_uncertified);
+        } else {
+            mPreference.setIcon(uncertified);
+            mPreference.setTitle(R.string.device_certification_status_unknown);
+        }
     }
 }
